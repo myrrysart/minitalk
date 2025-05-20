@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jyniemit <jyniemit@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/10 14:37:13 by jyniemit          #+#    #+#             */
-/*   Updated: 2025/05/16 19:15:29 by jyniemit         ###   ########.fr       */
+/*   Created: 2025/05/17 15:15:30 by jyniemit          #+#    #+#             */
+/*   Updated: 2025/05/20 18:10:23 by jyniemit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,72 +14,61 @@
 
 volatile sig_atomic_t	g_state = 0;
 
-void	sig_handler(int signum);
-void	display_error(char *message);
-int	wait_for_handshake(void);
-int	send_byte(char c, int server_pid);
+static void					sig_handler(int signum);
+static int					wait_for_handshake(void);
+static int					send_byte(char c, int server_pid);
+static void					setup_signals(void);
 
 int	main(int ac, char **av)
 {
-	int					server_pid;
-	char				*message;
-	int					i;
-	struct sigaction	sa;
+	int		server_pid;
+	char	*message;
+	int		i;
 
 	if (ac != 3)
-		display_error("Usage: ./client [server PID] [message]");
+		ft_err_exit("Usage: ./client [server PID] [message]");
 	server_pid = ft_atoi(av[1]);
 	if (server_pid <= 0)
-		display_error("Invalid PID");
-	g_state = server_pid;
-	sa.sa_handler = sig_handler;
-	sig_handler(-1);
-	g_state = 0;
-	sigemptyset(&sa.sa_mask);
-	sigaddset(&sa.sa_mask, SIGUSR1);
-	sigaddset(&sa.sa_mask, SIGUSR2);
-	sigaddset(&sa.sa_mask, SIGINT);
-	sa.sa_flags = 0;
-	sigaction(SIGUSR1, &sa, NULL);
-	sigaction(SIGUSR2, &sa, NULL);
-	sigaction(SIGINT, &sa, NULL);
+		ft_err_exit("Invalid PID");
+	setup_signals();
 	message = av[2];
 	i = 0;
 	while (message[i])
 	{
 		if (send_byte(message[i++], server_pid))
-			display_error("Server did not respond");
+			ft_err_exit("Server did not respond");
+		if (g_state == 2)
+			ft_err_exit("Server busy with another client, try again later");
 	}
 	if (send_byte('\0', server_pid))
-		display_error("Server did not respond");
-	while (g_state != 2)
-		usleep(100000);
-	ft_printf("Message sent\n");
+		ft_err_exit("Server did not respond");
+	if (g_state != 2)
+		usleep(500000);
+	if (g_state != 2)
+		ft_err_exit("Final acknowledgement missing.");
 	return (0);
+}
+
+void	setup_signals(void)
+{
+	struct sigaction	sa;
+
+	g_state = 0;
+	sa.sa_handler = sig_handler;
+	sigemptyset(&sa.sa_mask);
+	sigaddset(&sa.sa_mask, SIGUSR1);
+	sigaddset(&sa.sa_mask, SIGUSR2);
+	sa.sa_flags = 0;
+	sigaction(SIGUSR1, &sa, NULL);
+	sigaction(SIGUSR2, &sa, NULL);
 }
 
 void	sig_handler(int signum)
 {
-	int	server_pid;
-
-	if (signum == -1)
-		server_pid = g_state;
 	if (signum == SIGUSR1)
 		g_state = 1;
 	if (signum == SIGUSR2)
 		g_state = 2;
-	if (signum == SIGINT)
-	{
-		ft_printf("User interrupt.\n");
-		send_byte('\0', server_pid);
-		exit(130);
-	}
-}
-
-void	display_error(char *message)
-{
-	ft_printf("%s\n", message);
-	exit(1);
 }
 
 int	wait_for_handshake(void)
