@@ -6,7 +6,7 @@
 #    By: Jyniemit <jyniemit@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/30 15:03:53 by Jyniemit          #+#    #+#              #
-#    Updated: 2025/04/28 14:52:59 by jyniemit         ###   ########.fr        #
+#    Updated: 2025/05/17 15:28:46 by jyniemit         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,6 +47,7 @@ SRCS = ft_atoi.c		\
 		ft_tolower.c	\
 		ft_toupper.c	\
 		ft_printf.c		\
+		ft_err_exit.c   \
 		handle_c.c		\
 		handle_s.c		\
 		handle_u.c		\

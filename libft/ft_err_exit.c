@@ -1,30 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minitalk.h                                         :+:      :+:    :+:   */
+/*   ft_err_exit.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jyniemit <jyniemit@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/15 15:05:33 by jyniemit          #+#    #+#             */
-/*   Updated: 2025/05/20 18:59:33 by jyniemit         ###   ########.fr       */
+/*   Created: 2025/05/17 15:19:35 by jyniemit          #+#    #+#             */
+/*   Updated: 2025/05/17 15:24:08 by jyniemit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINITALK_H
-# define MINITALK_H
-//for signal stuff
-# include <signal.h>
-//for ft_printf
-# include <libft.h>
-# define MAX_MESSAGE_SIZE 2097152
+#include "libft.h"
 
-typedef struct s_message
+void	ft_err_exit(char *message)
 {
-	unsigned char	buffer[MAX_MESSAGE_SIZE];
-	size_t			length;
-	pid_t			client_pid;
-	unsigned char	current_byte;
-	unsigned char	bit_position;
-}	t_message;
-
-#endif
+	while (*message)
+		write(2, message++, 1);
+	exit(1);
+}
