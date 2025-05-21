@@ -6,7 +6,7 @@
 /*   By: jyniemit <jyniemit@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 15:15:30 by jyniemit          #+#    #+#             */
-/*   Updated: 2025/05/20 18:10:23 by jyniemit         ###   ########.fr       */
+/*   Updated: 2025/05/21 11:10:07 by jyniemit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,6 @@ int	main(int ac, char **av)
 	}
 	if (send_byte('\0', server_pid))
 		ft_err_exit("Server did not respond");
-	if (g_state != 2)
-		usleep(500000);
-	if (g_state != 2)
-		ft_err_exit("Final acknowledgement missing.");
 	return (0);
 }
 
