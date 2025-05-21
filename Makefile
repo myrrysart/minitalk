@@ -6,7 +6,7 @@
 #    By: jyniemit <jyniemit@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/28 15:01:26 by jyniemit          #+#    #+#              #
-#    Updated: 2025/05/20 19:28:21 by jyniemit         ###   ########.fr        #
+#    Updated: 2025/05/21 11:04:12 by jyniemit         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,9 +54,9 @@ fclean: clean
 	@rm -f $(CLIENT)
 	@make -C $(LIBFTDIR) fclean
 
-debug: CFLAGS += -g
-debug: re
-	@echo "Recompiling with debugflags: $(CFLAGS)"
+debug: fclean
+	@make -C $(LIBFTDIR) debug
+	$(MAKE) CFLAGS="$(CFLAGS) -g" all
 
 re: fclean all
 

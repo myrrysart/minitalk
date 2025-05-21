@@ -6,12 +6,11 @@
 #    By: Jyniemit <jyniemit@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/30 15:03:53 by Jyniemit          #+#    #+#              #
-#    Updated: 2025/05/17 15:28:46 by jyniemit         ###   ########.fr        #
+#    Updated: 2025/05/21 10:57:46 by jyniemit         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libft.a
-FLAGS = -Wall -Wextra -Werror
 SRCS = ft_atoi.c		\
 		ft_bzero.c		\
 		ft_calloc.c		\
@@ -56,6 +55,7 @@ SRCS = ft_atoi.c		\
 		handle_hex_low.c\
 		handle_hex_up.c
 
+FLAGS = -Wall -Wextra -Werror
 OBJSDIR = ./build/
 OBJS = $(addprefix $(OBJSDIR), $(SRCS:.c=.o))
 HEADER = libft.h
@@ -69,7 +69,7 @@ $(OBJSDIR)%.o: %.c | $(OBJSDIR)
 	cc $(FLAGS) -c $< -o $@
 
 $(OBJSDIR):
-	mkdir build
+	mkdir -p build
 
 clean:
 	rm -fr	$(OBJSDIR)
@@ -77,6 +77,9 @@ clean:
 fclean: clean
 	rm -f $(NAME)
 
-re: fclean
-	$(MAKE) all
-.PHONY: all clean fclean re
+re: fclean all
+
+debug: FLAGS += -g
+debug: fclean all
+
+.PHONY: all clean fclean re debug

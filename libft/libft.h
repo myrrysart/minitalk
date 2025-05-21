@@ -6,7 +6,7 @@
 /*   By: Jyniemit <jyniemit@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 16:30:50 by Jyniemit          #+#    #+#             */
-/*   Updated: 2025/05/17 15:46:35 by jyniemit         ###   ########.fr       */
+/*   Updated: 2025/05/21 10:31:13 by jyniemit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include <stdint.h>
 // INT_MIN & INT_MAX
 # include <limits.h>
-// args
+// args for ft_printf
 # include <stdarg.h>
 // write()
 # include <unistd.h>
@@ -36,7 +36,6 @@ int		handle_p(va_list args);
 int		handle_hex_low(va_list args);
 int		handle_hex_up(va_list args);
 
-// get next line
 // LIBFT functions:
 int		ft_atoi(const char *str);
 void	ft_bzero(void *s, size_t n);
